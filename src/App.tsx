@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import html2canvas from 'html2canvas'
-import './App.css'
+import { isMac, isWindows } from './utils/ua'
+import './App.less'
 
 const targetType = '_blank'
 const previewBoxSelector = '#display-content'
@@ -10,6 +11,7 @@ function App() {
 	const [text, setText] = useState('')
 	const [imageUrl, setImageUrl] = useState('')
 	const [loading, setLoading] = useState(false)
+	const [viewImgModalVisible, setViewImgModalVisible] = useState(false)
 
 	const handleTextChange = (e: any) => {
 		setText(e.target.value)
@@ -27,6 +29,12 @@ function App() {
 			setLoading(false)
 		});
 	}
+
+	const viewImg = () => {
+		setViewImgModalVisible(true)
+	}
+
+	const isPC = isMac || isWindows
 
   return (
     <div className="App">
@@ -49,13 +57,20 @@ function App() {
 			</div>
 			{
 				loading ?
-					<button>
+					<button className='download-btn'>
 						<span>生成中...</span>
 					</button>
 					:
+					isPC ?
 					<a className='download-btn' href={imageUrl} download="logo.png">
-						{loading ? '生成中...' : '确认生成'}
+						确认生成
 					</a>
+					:
+						<button className='download-btn'
+							onClick={viewImg}
+						>
+							确认生成
+						</button>
 			}
 			<p>
 				输入任意文字 点击确认按钮即可生成图片
@@ -66,6 +81,19 @@ function App() {
 				<a href="https://www.npmjs.com/package/html2canvas" target={targetType}> html2canvas</a>,
 				Created by <a href="https://github.com/lexmin0412" target={targetType}>Lexmin0412</a>.
       </p>
+
+			{
+				viewImgModalVisible &&
+				<div className="view-img-modal">
+					<div className="view-img-modal-mask" />
+						<div className="view-img-modal-content"
+							onClick={() => setViewImgModalVisible(false)}
+						>
+						<img src={imageUrl} alt="logo"
+						/>
+					</div>
+				</div>
+			}
     </div>
   )
 }
