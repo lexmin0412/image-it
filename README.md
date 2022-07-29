@@ -1,6 +1,6 @@
 # Image It !
 
-Generate a image with your custom config.
+Generate an image with your custom config.
 
 [Go get it](https://lexmin0412.github.io/image-it/) !
 
