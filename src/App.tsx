@@ -9,6 +9,7 @@ const previewBoxSelector = '#display-content'
 function App() {
 	const [text, setText] = useState('')
 	const [imageUrl, setImageUrl] = useState('')
+	const [loading, setLoading] = useState(false)
 
 	const handleTextChange = (e: any) => {
 		setText(e.target.value)
@@ -19,9 +20,11 @@ function App() {
 	}, [text])
 
 	const handleGengerate = () => {
+		setLoading(true)
 		html2canvas(document.querySelector(previewBoxSelector) as HTMLElement).then(function (canvas) {
 			const base64Url = canvas.toDataURL("image/png")
 			setImageUrl(base64Url)
+			setLoading(false)
 		});
 	}
 
@@ -44,9 +47,16 @@ function App() {
 					</span>
 				</div>
 			</div>
-			<a className='download-btn' href={imageUrl} download="logo.png">
-				确认生成
-			</a>
+			{
+				loading ?
+					<button>
+						<span>生成中...</span>
+					</button>
+					:
+					<a className='download-btn' href={imageUrl} download="logo.png">
+						{loading ? '生成中...' : '确认生成'}
+					</a>
+			}
 			<p>
 				输入任意文字 点击确认按钮即可生成图片
 			</p>
