@@ -51,10 +51,9 @@ function App() {
 				输入任意文字 点击确认按钮即可生成图片
 			</p>
       <p className="read-the-docs">
-				Powered by
-				<a href="https://github.com/vitejs/vite" target={targetType}>Vite</a>,
-				<a href='https://reactjs.org/' target={targetType}>React</a>,
-				<a href="https://www.npmjs.com/package/html2canvas" target={targetType}>html2canvas</a>,
+				Powered by <a href="https://github.com/vitejs/vite" target={targetType}>Vite</a>,
+				<a href='https://reactjs.org/' target={targetType}> React</a>,
+				<a href="https://www.npmjs.com/package/html2canvas" target={targetType}> html2canvas</a>,
 				Created by <a href="https://github.com/lexmin0412" target={targetType}>Lexmin0412</a>.
       </p>
     </div>
