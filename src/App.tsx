@@ -3,18 +3,20 @@ import reactLogo from './assets/react.svg'
 import html2canvas from 'html2canvas'
 import toast, { Toaster } from 'react-hot-toast';
 import Modal from './components/modal'
+import ColorPicker from './components/color-picker'
 import { isMac, isWindows } from './utils/ua'
 import './App.less'
 
-const targetType = '_blank'
-const previewBoxSelector = '#display-content'
+const TARGET_TYPE = '_blank'
+const PREVIEW_CONTAINER_SELECTOR = '#display-content'
+const DEFAULT_TEXT_COLOR = '#ff4a4a'
 
 function App() {
 	const [text, setText] = useState('')
 	const [imageUrl, setImageUrl] = useState('')
 	const [loading, setLoading] = useState(false)
 	const [viewImgModalVisible, setViewImgModalVisible] = useState(false)
-	const [color, setColor] = useState("#aabbcc");
+	const [color, setColor] = useState(DEFAULT_TEXT_COLOR);
 
 	const handleTextChange = (e: any) => {
 		setText(e.target.value)
@@ -22,11 +24,11 @@ function App() {
 
 	useEffect(() => {
 		handleGengerate()
-	}, [text])
+	}, [text, color])
 
 	const handleGengerate = () => {
 		setLoading(true)
-		html2canvas(document.querySelector(previewBoxSelector) as HTMLElement).then(function (canvas) {
+		html2canvas(document.querySelector(PREVIEW_CONTAINER_SELECTOR) as HTMLElement).then(function (canvas) {
 			const base64Url = canvas.toDataURL("image/png")
 			setImageUrl(base64Url)
 			setLoading(false)
@@ -54,11 +56,20 @@ function App() {
         </a>
       </div>
       <h1>Image It !</h1>
-			logo 文字：<input type="text" placeholder='请输入文字' value={text} onChange={handleTextChange} />
+			logo 文字：<input type="text" placeholder='请输入文字' value={text} onChange={handleTextChange}
+				style={{
+					marginBottom: '10px',
+				}}
+			/>
+			<ColorPicker initialColor={DEFAULT_TEXT_COLOR} title='颜色' onChange={(color) => setColor(color)} />
 
 			<div className='display-container'>
 				<div className="display-content-box">
-					<span id='display-content' className='display-content'>
+					<span id='display-content' className='display-content'
+						style={{
+							color: color,
+						}}
+					>
 						{text}
 					</span>
 				</div>
@@ -84,17 +95,18 @@ function App() {
 				输入任意文字 点击确认按钮即可生成图片
 			</p>
       <p className="read-the-docs">
-				Powered by <a href="https://github.com/vitejs/vite" target={targetType}>Vite</a>,
-				<a href='https://reactjs.org/' target={targetType}> React</a>,
-				<a href="https://www.npmjs.com/package/html2canvas" target={targetType}> html2canvas</a>,
-				Created by <a href="https://github.com/lexmin0412" target={targetType}>Lexmin0412</a>.
+				Powered by <a href="https://github.com/vitejs/vite" target={TARGET_TYPE}>Vite</a>,
+				<a href='https://reactjs.org/' target={TARGET_TYPE}> React</a>,
+				<a href="https://www.npmjs.com/package/html2canvas" target={TARGET_TYPE}> html2canvas</a>,
+				Created by <a href="https://github.com/lexmin0412" target={TARGET_TYPE}>Lexmin0412</a>.
       </p>
 
 			<Modal
 				visible={viewImgModalVisible}
-				handleClose={() => setViewImgModalVisible(false)}
 			>
-				<img src={imageUrl} alt="logo" />
+				<img src={imageUrl} alt="logo"
+					onClick={() => setViewImgModalVisible(false)}
+				/>
 			</Modal>
 
 			<Toaster/>
