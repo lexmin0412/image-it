@@ -105,6 +105,9 @@ function App() {
 				visible={viewImgModalVisible}
 			>
 				<img src={imageUrl} alt="logo"
+					style={{
+						width: '100%'
+					}}
 					onClick={() => setViewImgModalVisible(false)}
 				/>
 			</Modal>
