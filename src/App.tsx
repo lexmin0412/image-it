@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import html2canvas from 'html2canvas'
+import toast, { Toaster } from 'react-hot-toast';
+import Modal from './components/modal'
 import { isMac, isWindows } from './utils/ua'
 import './App.less'
 
@@ -12,6 +14,7 @@ function App() {
 	const [imageUrl, setImageUrl] = useState('')
 	const [loading, setLoading] = useState(false)
 	const [viewImgModalVisible, setViewImgModalVisible] = useState(false)
+	const [color, setColor] = useState("#aabbcc");
 
 	const handleTextChange = (e: any) => {
 		setText(e.target.value)
@@ -31,10 +34,14 @@ function App() {
 	}
 
 	const viewImg = () => {
+		if (!text) {
+			toast('请先输入文字')
+			return
+		}
 		setViewImgModalVisible(true)
 	}
 
-	const isPC = isMac || isWindows
+	const isPC = (isMac || isWindows) && false
 
   return (
     <div className="App">
@@ -48,6 +55,7 @@ function App() {
       </div>
       <h1>Image It !</h1>
 			logo 文字：<input type="text" placeholder='请输入文字' value={text} onChange={handleTextChange} />
+
 			<div className='display-container'>
 				<div className="display-content-box">
 					<span id='display-content' className='display-content'>
@@ -82,18 +90,14 @@ function App() {
 				Created by <a href="https://github.com/lexmin0412" target={targetType}>Lexmin0412</a>.
       </p>
 
-			{
-				viewImgModalVisible &&
-				<div className="view-img-modal">
-					<div className="view-img-modal-mask" />
-						<div className="view-img-modal-content"
-							onClick={() => setViewImgModalVisible(false)}
-						>
-						<img src={imageUrl} alt="logo"
-						/>
-					</div>
-				</div>
-			}
+			<Modal
+				visible={viewImgModalVisible}
+				handleClose={() => setViewImgModalVisible(false)}
+			>
+				<img src={imageUrl} alt="logo" />
+			</Modal>
+
+			<Toaster/>
     </div>
   )
 }
